@@ -3,31 +3,55 @@
 <head>
   <meta charset="UTF-8">
   <title>Redirecting...</title>
-  <!-- Redirect after 60 seconds -->
-  <meta http-equiv="refresh" content="60;url=https://yourusername.github.io/target-page/">
+  <meta http-equiv="refresh" content="60;url=https://yashocraft.github.io/free/">
   <link href="https://fonts.cdnfonts.com/css/minecraftia" rel="stylesheet">
   <style>
+    /* Full-screen animated gradient */
+    html {
+      height: 100%;
+      background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+      background-size: 400% 400%;
+      animation: gradientBG 20s ease infinite;
+    }
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
     body {
       margin: 0;
-      background: white;
-      height: 100vh;
+      height: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
       font-family: 'Minecraftia', sans-serif;
     }
-    .link {
+    /* Styled semi-transparent button */
+    .button {
       font-size: 48px;
-      color: #333;
+      color: #fff;
+      background: rgba(50, 50, 50, 0.5);
+      padding: 20px 40px;
+      border: 2px solid rgba(255, 255, 255, 0.7);
+      border-radius: 12px;
       text-decoration: none;
-      transition: color 0.3s;
+      transition: background 0.3s, transform 0.2s;
     }
-    .link:hover {
-      color: #000;
+    .button:hover {
+      background: rgba(50, 50, 50, 0.7);
+      transform: scale(1.05);
+    }
+    .button:active {
+      transform: scale(0.95);
     }
   </style>
 </head>
 <body>
-  <a class="link" href="https://yourusername.github.io/target-page/" target="_blank" rel="noopener">Free</a>
+  <a class="button"
+     href="https://yashocraft.github.io/free/"
+     target="_blank"
+     rel="noopener noreferrer">
+    Free
+  </a>
 </body>
 </html>
