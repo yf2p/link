@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Redirecting...</title>
-  <meta http-equiv="refresh" content="2;url=https://yashocraft.github.io/free/">
-  <link rel="canonical" href="https://yashocraft.github.io/free/">
+  <!-- Redirect after 60 seconds -->
+  <meta http-equiv="refresh" content="60;url=https://yourusername.github.io/target-page/">
   <link href="https://fonts.cdnfonts.com/css/minecraftia" rel="stylesheet">
   <style>
     body {
@@ -15,12 +15,19 @@
       justify-content: center;
       align-items: center;
       font-family: 'Minecraftia', sans-serif;
+    }
+    .link {
       font-size: 48px;
       color: #333;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .link:hover {
+      color: #000;
     }
   </style>
 </head>
 <body>
-  Free
+  <a class="link" href="https://yourusername.github.io/target-page/" target="_blank" rel="noopener">Free</a>
 </body>
 </html>
