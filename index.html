@@ -3,15 +3,61 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Free</title>
-  <script>
-    setTimeout(() => {
-      window.location.href = "https://free-jfeh.onrender.com/";
-    }, 1000); // 1000 milliseconds = 1 second
-  </script>
+  <title>Redirecting...</title>
+  <style>
+    body { margin: 0; background-color: white; }
+  </style>
 </head>
-<body style="margin: 0; background-color: white;">
+<body>
+  <script>
+    const websites = [
+      'https://free-dlc.onrender.com/',
+      'https://free-dlc.netlify.app/'
+    ];
+
+    // Fast check with timeout
+    async function checkWebsite(url) {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 1500);
+        
+        const response = await fetch(url, {
+          method: 'HEAD',
+          mode: 'no-cors',
+          signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
+        return true;
+      } catch (error) {
+        return false;
+      }
+    }
+
+    // Check all websites and redirect to a random accessible one
+    async function findAndRedirect() {
+      const checks = await Promise.allSettled(
+        websites.map(url => checkWebsite(url))
+      );
+
+      const accessibleWebsites = websites.filter((url, index) => 
+        checks[index].status === 'fulfilled' && checks[index].value === true
+      );
+
+      if (accessibleWebsites.length > 0) {
+        // Redirect to random accessible website
+        const randomSite = accessibleWebsites[Math.floor(Math.random() * accessibleWebsites.length)];
+        window.location.href = randomSite;
+      } else {
+        // If all fail, redirect to first one as fallback after brief delay
+        setTimeout(() => {
+          window.location.href = websites[0];
+        }, 500);
+      }
+    }
+
+    // Start the process immediately
+    findAndRedirect();
+  </script>
 </body>
 </html>
-
-
