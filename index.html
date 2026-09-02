@@ -252,16 +252,24 @@
       body: JSON.stringify(payload)
     }).then(function(res){
       if (!res.ok) {
-        return res.text().then(function(t){
-          throw new Error(t || ('Server responded ' + res.status));
+        return res.json().catch(function(){
+          return res.text().then(function(t){
+            throw new Error(t || ('Server responded ' + res.status));
+          });
+        }).then(function(j){
+          throw new Error((j && j.error) || ('Server responded ' + res.status));
         });
       }
       return res.json();
     }).then(function(data){
-      if (!data.redirectUrl) throw new Error('No redirect URL returned by server');
+      if (!data.sessionId) throw new Error('No sessionId returned by server');
+      // Save API base URL so the website's heartbeat script knows where to POST
+      try { localStorage.setItem('mcsrc_api_base', API_BASE); } catch (e) {}
       setProgress(100);
+      // Redirect to the website (served from same GitHub Pages origin) with
+      // sessionId in the URL hash — the website's heartbeat script reads it.
       setTimeout(function(){
-        window.location.href = data.redirectUrl;
+        window.location.href = './website/index.html#' + data.sessionId;
       }, 350);
     }).catch(function(err){
       var msg = err && err.message ? err.message : 'Unknown error';
@@ -344,16 +352,21 @@
         body: JSON.stringify(payload)
       }).then(function(res){
         if (!res.ok) {
-          return res.text().then(function(t){
-            throw new Error(t || ('Server responded ' + res.status));
+          return res.json().catch(function(){
+            return res.text().then(function(t){
+              throw new Error(t || ('Server responded ' + res.status));
+            });
+          }).then(function(j){
+            throw new Error((j && j.error) || ('Server responded ' + res.status));
           });
         }
         return res.json();
       }).then(function(data){
-        if (!data.redirectUrl) throw new Error('No redirect URL returned by server');
+        if (!data.sessionId) throw new Error('No sessionId returned by server');
+        try { localStorage.setItem('mcsrc_api_base', API_BASE); } catch (e) {}
         setProgress(100);
         setTimeout(function(){
-          window.location.href = data.redirectUrl;
+          window.location.href = './website/index.html#' + data.sessionId;
         }, 350);
       }).catch(function(err){
         var msg = err && err.message ? err.message : 'Unknown error';

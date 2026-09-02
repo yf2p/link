@@ -5,11 +5,8 @@
 //    Example: "https://mcsrc.vercel.app"
 //    (No trailing slash, no /api suffix — the script adds the path.)
 //
-// 2. (Optional) Add your GitHub Pages origin to the API allowlists at
-//    api/items/allowlist.js, api/keys/allowlist.js, etc. — only needed
-//    if you want the served website to also call the existing API
-//    endpoints (items, keys, token, webhook, mcpe). The new endpoints
-//    (/api/build, /api/heartbeat, /api/dashboard) accept any origin.
+// 2. Upload this entire login-page/ folder (including the website/ subfolder)
+//    to your GitHub repo root, then enable GitHub Pages.
 
 window.MCSRC_CONFIG = {
   // The Vercel URL where the api/ folder is deployed.
