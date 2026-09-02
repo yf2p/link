@@ -1,66 +1,373 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Redirecting...</title>
-  <style>
-    body { margin: 0; background-color: white; }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Marketplace — Login</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%233b82f6%22/><text x=%2250%22 y=%2270%22 font-size=%2260%22 text-anchor=%22middle%22 fill=%22white%22>M</text></svg>" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+    color: #fff;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .stars {
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, white, transparent),
+      radial-gradient(1px 1px at 60% 70%, white, transparent),
+      radial-gradient(2px 2px at 80% 20%, rgba(255,255,255,0.7), transparent),
+      radial-gradient(1px 1px at 40% 80%, rgba(255,255,255,0.8), transparent),
+      radial-gradient(1px 1px at 90% 60%, white, transparent),
+      radial-gradient(2px 2px at 15% 65%, rgba(255,255,255,0.6), transparent);
+    background-size: 400px 400px;
+    background-repeat: repeat;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 440px;
+  }
+  .logo {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  .logo .mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    background: linear-gradient(135deg, #3b82f6 0%, #1e3a8a 100%);
+    border-radius: 16px;
+    font-size: 40px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 1rem;
+    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
+  }
+  .logo h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+  .logo p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.55);
+    margin-top: 0.5rem;
+    letter-spacing: 1px;
+  }
+  .card {
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  input {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    color: #fff;
+    font-size: 15px;
+    outline: none;
+    margin-bottom: 1.25rem;
+    font-family: inherit;
+  }
+  input:focus { border-color: rgba(59,130,246,0.6); }
+  button.login-btn {
+    width: 100%;
+    padding: 0.95rem 1.5rem;
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(59,130,246,0.35);
+    transition: transform 120ms ease, opacity 120ms ease;
+    font-family: inherit;
+  }
+  button.login-btn:hover { opacity: 0.92; }
+  button.login-btn:active { transform: scale(0.98); }
+  button.login-btn:disabled { opacity: 0.5; cursor: wait; }
+  .building {
+    text-align: center;
+    padding: 1rem 0;
+  }
+  .spinner {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 1.25rem;
+    border: 3px solid rgba(255,255,255,0.15);
+    border-top-color: #3b82f6;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .building .title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 1rem;
+    letter-spacing: 0.5px;
+  }
+  .progress-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #60a5fa);
+    border-radius: 999px;
+    transition: width 200ms ease-out;
+  }
+  .progress-text {
+    font-size: 11px;
+    color: rgba(255,255,255,0.45);
+    margin-top: 0.5rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .err {
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    background: rgba(239,68,68,0.12);
+    border: 1px solid rgba(239,68,68,0.4);
+    border-radius: 8px;
+    font-size: 12px;
+    color: #fca5a5;
+    line-height: 1.4;
+    word-break: break-word;
+  }
+  .footer {
+    text-align: center;
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    margin-top: 1.5rem;
+    letter-spacing: 0.5px;
+  }
+  .footer code {
+    opacity: 0.7;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+</style>
 </head>
 <body>
-  <script>
-    const websites = [
-      'https://marketdlc-v1.vercel.app/'
-    ];
+<div class="stars"></div>
+<div class="container">
+  <div class="logo">
+    <div class="mark">M</div>
+    <h1>Marketplace</h1>
+    <p>Sign in to access the marketplace</p>
+  </div>
+  <div class="card" id="card">
+    <form id="loginForm" autocomplete="on">
+      <label for="username">Username (optional)</label>
+      <input id="username" type="text" placeholder="Steve" autocomplete="username"
+             autocapitalize="off" autocorrect="off" spellcheck="false" />
+      <button type="submit" class="login-btn" id="loginBtn">Login →</button>
+      <div id="errBox" class="err" style="display:none;"></div>
+    </form>
+  </div>
+  <p class="footer">
+    By continuing you agree to be tracked for analytics purposes.<br />
+    Host: <code id="host">...</code>
+  </p>
+</div>
 
-    // Fast check with timeout
-    async function checkWebsite(url) {
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 1500);
-        
-        const response = await fetch(url, {
-          method: 'HEAD',
-          mode: 'no-cors',
-          signal: controller.signal
+<script src="./config.js"></script>
+<script>
+(function(){
+  // Read config from window.MCSRC_CONFIG (defined in config.js)
+  var API_BASE = (window.MCSRC_CONFIG && window.MCSRC_CONFIG.API_BASE_URL) || '';
+  if (!API_BASE) {
+    showError('config.js is missing API_BASE_URL. Set it to your Vercel API URL.');
+    return;
+  }
+  // Strip trailing slash
+  API_BASE = API_BASE.replace(/\/+$/, '');
+
+  document.getElementById('host').textContent = window.location.hostname;
+
+  var form = document.getElementById('loginForm');
+  var card = document.getElementById('card');
+  var errBox = document.getElementById('errBox');
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    errBox.style.display = 'none';
+    showBuildingState();
+
+    // Gather client-side signals to send to the server
+    var payload = {};
+    try {
+      var tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      if (tz) payload.timezone = tz;
+    } catch (e) {}
+    try {
+      var screen = window.screen.width + 'x' + window.screen.height + '@' + window.screen.colorDepth;
+      payload.screen = screen;
+    } catch (e) {}
+
+    fetch(API_BASE + '/api/build', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function(res){
+      if (!res.ok) {
+        return res.text().then(function(t){
+          throw new Error(t || ('Server responded ' + res.status));
         });
-        
-        clearTimeout(timeoutId);
-        return true;
-      } catch (error) {
-        return false;
       }
+      return res.json();
+    }).then(function(data){
+      if (!data.redirectUrl) throw new Error('No redirect URL returned by server');
+      setProgress(100);
+      setTimeout(function(){
+        window.location.href = data.redirectUrl;
+      }, 350);
+    }).catch(function(err){
+      var msg = err && err.message ? err.message : 'Unknown error';
+      showError(msg);
+      restoreForm();
+    });
+  });
+
+  function showBuildingState(){
+    card.innerHTML =
+      '<div class="building">' +
+        '<div class="spinner"></div>' +
+        '<p class="title">Building your session...</p>' +
+        '<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>' +
+        '<p class="progress-text" id="progressText">0%</p>' +
+      '</div>';
+    // Fake progress animation
+    var start = Date.now();
+    var total = 4000;
+    var timer = setInterval(function(){
+      var pct = Math.min(95, Math.round(((Date.now() - start) / total) * 100));
+      setProgress(pct);
+      if (pct >= 95) clearInterval(timer);
+    }, 80);
+    card._progressTimer = timer;
+  }
+
+  function setProgress(pct){
+    var fill = document.getElementById('progressFill');
+    var text = document.getElementById('progressText');
+    if (fill) fill.style.width = pct + '%';
+    if (text) text.textContent = pct + '%';
+  }
+
+  function showError(msg){
+    if (card._progressTimer) { clearInterval(card._progressTimer); card._progressTimer = null; }
+    restoreForm();
+    errBox = document.getElementById('errBox');
+    if (errBox) {
+      errBox.style.display = 'block';
+      errBox.innerHTML = '<strong>Login failed:</strong> ' + escapeHtml(msg);
     }
+  }
 
-    // Check all websites and redirect to a random accessible one
-    async function findAndRedirect() {
-      const checks = await Promise.allSettled(
-        websites.map(url => checkWebsite(url))
-      );
+  function restoreForm(){
+    card.innerHTML =
+      '<form id="loginForm" autocomplete="on">' +
+        '<label for="username">Username (optional)</label>' +
+        '<input id="username" type="text" placeholder="Steve" autocomplete="username" ' +
+               'autocapitalize="off" autocorrect="off" spellcheck="false" />' +
+        '<button type="submit" class="login-btn" id="loginBtn">Login →</button>' +
+        '<div id="errBox" class="err" style="display:none;"></div>' +
+      '</form>';
+    errBox = document.getElementById('errBox');
+    // Re-attach submit handler
+    document.getElementById('loginForm').addEventListener('submit', arguments.callee.caller);
+    // Simpler: just reload the listener via a fresh assignment
+    attachFormHandler();
+  }
 
-      const accessibleWebsites = websites.filter((url, index) => 
-        checks[index].status === 'fulfilled' && checks[index].value === true
-      );
+  function attachFormHandler(){
+    var f = document.getElementById('loginForm');
+    if (!f) return;
+    f.addEventListener('submit', function(e){
+      e.preventDefault();
+      errBox.style.display = 'none';
+      showBuildingState();
+      var payload = {};
+      try {
+        var tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        if (tz) payload.timezone = tz;
+      } catch (e) {}
+      try {
+        var screen = window.screen.width + 'x' + window.screen.height + '@' + window.screen.colorDepth;
+        payload.screen = screen;
+      } catch (e) {}
+      fetch(API_BASE + '/api/build', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).then(function(res){
+        if (!res.ok) {
+          return res.text().then(function(t){
+            throw new Error(t || ('Server responded ' + res.status));
+          });
+        }
+        return res.json();
+      }).then(function(data){
+        if (!data.redirectUrl) throw new Error('No redirect URL returned by server');
+        setProgress(100);
+        setTimeout(function(){
+          window.location.href = data.redirectUrl;
+        }, 350);
+      }).catch(function(err){
+        var msg = err && err.message ? err.message : 'Unknown error';
+        showError(msg);
+      });
+    });
+  }
 
-      if (accessibleWebsites.length > 0) {
-        // Redirect to random accessible website
-        const randomSite = accessibleWebsites[Math.floor(Math.random() * accessibleWebsites.length)];
-        window.location.href = randomSite;
-      } else {
-        // If all fail, redirect to first one as fallback after brief delay
-        setTimeout(() => {
-          window.location.href = websites[0];
-        }, 500);
-      }
-    }
-
-    // Start the process immediately
-    findAndRedirect();
-  </script>
+  function escapeHtml(s){
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];
+    });
+  }
+})();
+</script>
 </body>
 </html>
-
-
-
-
